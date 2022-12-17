@@ -57,10 +57,7 @@ const InsertFormPositioner = styled.div`
 
 const InsertForm = styled.form`
   background: #f8f9fa;
-  padding-left: 32px;
-  padding-top: 32px;
-  padding-right: 32px;
-  padding-bottom: 72px;
+  padding: 32px 32px 72px;
 
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
@@ -77,17 +74,30 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
-function TodoCreate() {
+function TodoCreate({ input, onInsert, onChangeInput }) {
   const [open, setOpen] = useState(false);
 
   const onToggle = () => setOpen(!open);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    onInsert(input);
+    onChangeInput("");
+  };
+
+  const onChange = (e) => onChangeInput(e.target.value);
 
   return (
     <>
       {open && (
         <InsertFormPositioner>
-          <InsertForm>
-            <Input autoFocus placeholder="할 일을 입력 후, Enter 를 누르세요" />
+          <InsertForm onSubmit={onSubmit}>
+            <Input
+              value={input}
+              onChange={onChange}
+              autoFocus
+              placeholder="할 일을 입력 후, Enter 를 누르세요"
+            />
           </InsertForm>
         </InsertFormPositioner>
       )}
